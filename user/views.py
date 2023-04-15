@@ -325,7 +325,7 @@ def MakeAppointments(request):
 	if g == 'Patient':
 		if request.method == 'POST':
 			doctoremail = request.POST['doctoremail']
-			doctorname = request.POST['doctorname']
+			doctorname = Doctor.objects.get(email=doctoremail).name
 			patientname = request.POST['patientname']
 			patientemail = request.POST['patientemail']
 			appointmentdate = request.POST['appointmentdate']
