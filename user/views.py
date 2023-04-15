@@ -106,8 +106,8 @@ def createaccountpage(request):
 	error = ""
 	user="none"
 	if request.method == 'POST':
-		fname = request.POST['name'].split()[0]
-		lname = request.POST['name'].split()[-1]
+		# fname = request.POST['name'].split()[0]
+		# lname = request.POST['name'].split()[-1]
 		name = request.POST['name']
 		email = request.POST['email']
 		password = request.POST['password']
@@ -120,16 +120,17 @@ def createaccountpage(request):
 		try:
 			if password == repeatpassword:
 				pat = Patient.objects.create(name=name,email=email,password=password,gender=gender,phonenumber=phonenumber,address=address,birthdate=birthdate,bloodgroup=bloodgroup)
-				user = User.objects.create_user(first_name=fname, last_name=lname,email=email,password=password,username=email)
+				user = User.objects.create_user(first_name=name,email=email,password=password,username=email)
 				pat_group, created = Group.objects.get_or_create(name='Patient')
 				# user.groups.add(pat_group)
 				# print(pat_group)
 				pat_group.user_set.add(user)
+				pat.save()
 				# print(pat_group)
 				user.save()
 				# print(user)
-				error = "no"
-				return render(request,'login.html',{'error': error})
+				error = "created"
+				# return render(request,'login.html',{'error': error})
 			else:
 				error = "yes"
 		except Exception as e:
